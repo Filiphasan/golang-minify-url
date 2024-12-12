@@ -1,0 +1,31 @@
+﻿volumes:
+  go-minify-url:
+    driver: local
+    
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - go-minify-url:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+  minify-url:
+    build:
+      context: .
+      dockerfile: cmd/api/Dockerfile
+    container_name: minify-url
+    restart: always
+    ports:
+      - "3001:8080"
+    volumes:
+      - go-minify-url:/go/src
+    depends_on:
+      - mongodb
+    environment:
+      APP_ENV: development
