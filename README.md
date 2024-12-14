@@ -39,11 +39,12 @@ golang-minify-url
 │   │   └── middleware.go
 │   ├── database/
 │   │   └── database.go             # Veritabanı erişim kodları
-│   └── logger/                     # Ortak modeller ve yardımcı fonksiyonlar
-│       └── logger.go               # Ortak modeller ve yardımcı fonksiyonlar
+│   └── logger/                     # Loglama kodları
+│       └── logger.go               # Loglama ayarlaması
 ├── configs/
 │   ├── config.json                 # Config dosyası
-│   └── config.dev.json             # Config dosyası - development
+│   ├── config.development.json             # Config dosyası - development
+│   └── app_config.go               # Config kodları
 ├── docs/                           # API docs
 ├── pkg/                            # Tekrar kullanılabilir bağımsız paketler
 │   └── common/                     # Ortak modeller ve yardımcı fonksiyonlar

@@ -1,3 +1,10 @@
-﻿{
-  "ProjectName":"golang-minify-url"
+{
+  "projectName": "golang-minify-url",
+  "mongodb": {
+    "host": "127.0.0.1",
+    "port": "27017",
+    "username": "root",
+    "password": "rwcTEcPORVK3xvKqVvKDeEBUHtwCfE2s2S",
+    "database": "golang-minify-url"
+  }
 }

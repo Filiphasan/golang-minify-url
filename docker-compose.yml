@@ -12,8 +12,8 @@ services:
     volumes:
       - go-minify-url:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
 
   minify-url:
     build:
@@ -28,4 +28,8 @@ services:
     depends_on:
       - mongodb
     environment:
-      APP_ENV: development
+      - APP_ENV=development
+      - mongodb:host=mongodb
+      - mongodb:port=27017
+      - mongodb:username=${MONGO_USERNAME}
+      - mongodb:password=${MONGO_PASSWORD}
