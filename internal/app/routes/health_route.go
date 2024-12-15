@@ -18,7 +18,8 @@ func NewHealthRoute(Router *gin.Engine) *HealthRoute {
 func (hr *HealthRoute) SetupHealthRoutes() {
 	healthController := controllers.NewHealthController()
 
-	hr.Router.GET("/api/health-check", func(context *gin.Context) {
+	group := hr.Router.Group("/api/health-check")
+	group.GET("/", func(context *gin.Context) {
 		healthController.GetHealth(context)
 	})
 }
