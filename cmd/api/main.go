@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/Filiphasan/golang-minify-url/configs"
 	"github.com/Filiphasan/golang-minify-url/internal/logger"
+	"github.com/Filiphasan/golang-minify-url/internal/setup"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
@@ -16,5 +18,9 @@ func main() {
 		panic(loggerErr)
 	}
 
-	logger.Logger.Info("Hello, World!", zap.String("Owner", "Hasan Erdal"))
+	router := gin.Default()
+	setup.NewApp(router).SetupApp()
+
+	logger.Logger.Info("Hello, Golang Minify URL!", zap.String("Owner", "Hasan Erdal"))
+	_ = router.Run(":5001")
 }

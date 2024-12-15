@@ -23,5 +23,5 @@ func UseLogger(appConfig *configs.AppConfig) {
 
 	zap.ReplaceGlobals(logger)
 
-	Logger = zap.L()
+	Logger = logger
 }
