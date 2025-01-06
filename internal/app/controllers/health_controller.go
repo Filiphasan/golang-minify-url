@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/Filiphasan/golang-minify-url/internal/app/models"
+	"github.com/Filiphasan/golang-minify-url/internal/app/models/result"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,5 +13,5 @@ func NewHealthController() *HealthController {
 }
 
 func (hc *HealthController) GetHealth(ctx *gin.Context) {
-	models.Success("Server is healthy", "OK").ToJson(ctx)
+	result.Success("Server is healthy", "OK").ToJson(ctx)
 }

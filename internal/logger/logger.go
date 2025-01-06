@@ -22,6 +22,7 @@ func UseLogger(appConfig *configs.AppConfig) {
 	logger = logger.With(zap.String("projectName", appConfig.ProjectName))
 
 	zap.ReplaceGlobals(logger)
+	zap.RedirectStdLog(logger)
 
 	Logger = logger
 }

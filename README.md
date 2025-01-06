@@ -8,6 +8,7 @@ URL Shortener Rest API Example written in Golang
 - [wire](https://github.com/google/wire)
 - [viper](https://github.com/spf13/viper)
 - [uber-zap](https://github.com/uber-go/zap)
+- [redis](https://github.com/redis/go-redis)
 
 ## Project Structure
 
