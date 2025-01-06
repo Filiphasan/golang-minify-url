@@ -6,5 +6,11 @@
     "username": "root",
     "password": "rwcTEcPORVK3xvKqVvKDeEBUHtwCfE2s2S",
     "database": "golang-minify-url"
+  },
+  "redis": {
+    "host": "127.0.0.1",
+    "port": "6379",
+    "password": "8mn1JpZ5oumuU2zTNwgK",
+    "database": 0
   }
 }

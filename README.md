@@ -21,6 +21,9 @@ golang-minify-url
 │       └── Dockerfile              # Dockerfile
 ├── internal/
 │   ├── app/                        # İş mantığı
+│   │   ├── caches                  # Cache işlemleri (Redis)
+│   │   │   ├── cache.go            # Cache interface
+│   │   │   └── redis.go            # Redis cache implementasyonu
 │   │   ├── controllers/            # HTTP handler'lar (controller katmanı)
 │   │   │   └── controller.go
 │   │   ├── services/               # İş mantığı (service katmanı)
@@ -44,7 +47,7 @@ golang-minify-url
 │       └── logger.go               # Loglama ayarlaması
 ├── configs/
 │   ├── config.json                 # Config dosyası
-│   ├── config.development.json             # Config dosyası - development
+│   ├── config.development.json     # Config dosyası - development
 │   └── app_config.go               # Config kodları
 ├── docs/                           # API docs
 ├── pkg/                            # Tekrar kullanılabilir bağımsız paketler

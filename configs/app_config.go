@@ -14,6 +14,12 @@ type AppConfig struct {
 		Password string `json:"password"`
 		Database string `json:"database"`
 	} `json:"mongodb"`
+	Redis struct {
+		Host     string `json:"host"`
+		Port     string `json:"port"`
+		Password string `json:"password"`
+		Database int    `json:"database"`
+	} `json:"redis"`
 }
 
 var appConfig *AppConfig
