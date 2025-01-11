@@ -35,7 +35,7 @@ services:
     container_name: minify-url
     restart: always
     ports:
-      - "3001:8080"
+      - "5001:8080"
     volumes:
       - go-minify-url:/go/src
     depends_on:
@@ -46,3 +46,5 @@ services:
       - mongodb:port=27017
       - mongodb:username=${MONGO_USERNAME}
       - mongodb:password=${MONGO_PASSWORD}
+      - redis:host=redis
+      - redis:password=${REDIS_PASSWORD}
