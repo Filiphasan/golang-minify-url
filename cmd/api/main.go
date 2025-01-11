@@ -28,5 +28,8 @@ func main() {
 	defer setupDefer(ctx)
 
 	logger.Logger.Info("Hello, Golang Minify URL!", zap.String("Owner", "Hasan Erdal"))
-	_ = router.Run(":5001")
+	err := router.Run(":5001")
+	if err != nil {
+		panic(err)
+	}
 }
