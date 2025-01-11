@@ -28,9 +28,9 @@ func (r RedisCache) Set(ctx context.Context, key string, value interface{}, ttl 
 	return r.client.Set(ctx, key, value, ttl).Err()
 }
 
-func (r RedisCache) Exist(ctx context.Context, key string) bool {
-	_, err := r.client.Get(ctx, key).Result()
-	return err != nil
+func (r RedisCache) Exist(ctx context.Context, key string) (bool, error) {
+	count, err := r.client.Exists(ctx, key).Result()
+	return count > 0, err
 }
 
 func (r RedisCache) Remove(ctx context.Context, key string) error {
