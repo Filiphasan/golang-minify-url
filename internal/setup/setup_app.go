@@ -30,7 +30,7 @@ func NewApp(appConfig *configs.AppConfig, logger *zap.Logger, Router *gin.Engine
 	}
 }
 
-func (app *App) SetupApp() func(ctx context.Context) {
+func (app *App) Run() func(ctx context.Context) {
 	redisCache := caches.NewRedisCache(app.Redis)
 	mongoContext := database.NewMongoContext(app.Mongo, app.AppConfig)
 

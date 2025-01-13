@@ -23,6 +23,7 @@ func NewHealthController(cache caches.Cache, mongoContext *database.MongoContext
 
 func (hc *HealthController) GetHealth(ctx *gin.Context) {
 	r := response.HealthRes{
+		Healthy: true,
 		Redis: response.HealthResItem{
 			Healthy: true,
 			Message: "OK",
@@ -35,14 +36,21 @@ func (hc *HealthController) GetHealth(ctx *gin.Context) {
 
 	redisErr := hc.Cache.Ping(ctx)
 	if redisErr != nil {
+		r.Healthy = false
 		r.Redis.Healthy = false
 		r.Redis.Message = redisErr.Error()
 	}
 
 	mongoErr := hc.MongoContext.Ping(ctx)
 	if mongoErr != nil {
+		r.Healthy = false
 		r.Mongo.Healthy = false
 		r.Mongo.Message = mongoErr.Error()
 	}
-	result.Success(&r, constants.SUCCESS).ToJson(ctx)
+
+	if r.Healthy {
+		result.Success(&r, constants.SUCCESS).ToJson(ctx)
+	} else {
+		result.FailureD(constants.InternalServerError, constants.FAILED, &r).ToJson(ctx)
+	}
 }

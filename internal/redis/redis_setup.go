@@ -7,7 +7,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-func UseRedis(appConfig *configs.AppConfig, ctx context.Context) *redis.Client {
+func UseRedis(ctx context.Context, appConfig *configs.AppConfig) *redis.Client {
 	address := fmt.Sprintf("%s:%s", appConfig.Redis.Host, appConfig.Redis.Port)
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     address,

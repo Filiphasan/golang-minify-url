@@ -8,9 +8,11 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
-func UseMongo(appConfig *configs.AppConfig, ctx context.Context) *mongo.Client {
+func UseMongo(ctx context.Context, appConfig *configs.AppConfig) *mongo.Client {
 	uri := getMongoUri(appConfig)
-	clientOptions := options.Client().ApplyURI(uri)
+	bsonOpt := options.BSONOptions{NilByteSliceAsEmpty: true, UseJSONStructTags: false}
+	clientOptions := options.Client().ApplyURI(uri).
+		SetBSONOptions(&bsonOpt)
 	clientOptions.Auth = &options.Credential{Username: appConfig.Mongodb.Username, Password: appConfig.Mongodb.Password}
 	client, err := mongo.Connect(clientOptions)
 	if err != nil {

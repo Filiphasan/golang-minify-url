@@ -54,6 +54,14 @@ func Failure[T any](statusCode int, message string) HttpResult[T] {
 	}
 }
 
+func FailureD[T any](statusCode int, message string, data T) HttpResult[T] {
+	return HttpResult[T]{
+		StatusCode: statusCode,
+		Message:    message,
+		Data:       data,
+	}
+}
+
 func (r HttpResult[T]) ToJson(ctx *gin.Context) {
 	ctx.JSON(r.StatusCode, r)
 }

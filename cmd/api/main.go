@@ -20,11 +20,11 @@ func main() {
 	appConfig := configs.GetAppConfig()
 
 	logger.UseLogger(appConfig)
-	mongoDb := database.UseMongo(appConfig, ctx)
-	redisCache := redis.UseRedis(appConfig, ctx)
+	mongoDb := database.UseMongo(ctx, appConfig)
+	redisCache := redis.UseRedis(ctx, appConfig)
 
 	router := gin.Default()
-	setupDefer := setup.NewApp(appConfig, logger.Logger, router, mongoDb, redisCache).SetupApp()
+	setupDefer := setup.NewApp(appConfig, logger.Logger, router, mongoDb, redisCache).Run()
 	defer setupDefer(ctx)
 
 	logger.Logger.Info("Hello, Golang Minify URL!", zap.String("Owner", "Hasan Erdal"))
