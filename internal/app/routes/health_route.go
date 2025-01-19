@@ -1,31 +1,25 @@
 package routes
 
 import (
-	"github.com/Filiphasan/golang-minify-url/internal/app/caches"
 	"github.com/Filiphasan/golang-minify-url/internal/app/controllers"
-	"github.com/Filiphasan/golang-minify-url/internal/database"
 	"github.com/gin-gonic/gin"
 )
 
 type HealthRoute struct {
-	Router       *gin.Engine
-	Cache        caches.Cache
-	MongoContext *database.MongoContext
+	router           *gin.Engine
+	healthController *controllers.HealthController
 }
 
-func NewHealthRoute(router *gin.Engine, cache caches.Cache, mongoContext *database.MongoContext) *HealthRoute {
+func NewHealthRoute(router *gin.Engine, healthController *controllers.HealthController) *HealthRoute {
 	return &HealthRoute{
-		Router:       router,
-		Cache:        cache,
-		MongoContext: mongoContext,
+		router:           router,
+		healthController: healthController,
 	}
 }
 
 func (hr *HealthRoute) SetupHealthRoutes() {
-	healthController := controllers.NewHealthController(hr.Cache, hr.MongoContext)
-
-	group := hr.Router.Group("/api/health-check")
-	group.GET("/", func(context *gin.Context) {
-		healthController.GetHealth(context)
+	group := hr.router.Group("/api/health-check")
+	group.GET("/", func(ctx *gin.Context) {
+		hr.healthController.GetHealth(ctx)
 	})
 }

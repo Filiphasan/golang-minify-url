@@ -54,7 +54,7 @@ func Failure[T any](statusCode int, message string) HttpResult[T] {
 	}
 }
 
-func FailureD[T any](statusCode int, message string, data T) HttpResult[T] {
+func FailureD[T any](data T, statusCode int, message string) HttpResult[T] {
 	return HttpResult[T]{
 		StatusCode: statusCode,
 		Message:    message,

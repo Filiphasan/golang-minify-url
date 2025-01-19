@@ -24,8 +24,8 @@ func main() {
 	redisCache := redis.UseRedis(ctx, appConfig)
 
 	router := gin.Default()
-	setupDefer := setup.NewApp(appConfig, logger.Logger, router, mongoDb, redisCache).Run()
-	defer setupDefer(ctx)
+	setupDefer := setup.NewApp(appConfig, logger.Logger, router, mongoDb, redisCache).Run(ctx)
+	defer setupDefer()
 
 	logger.Logger.Info("Hello, Golang Minify URL!", zap.String("Owner", "Hasan Erdal"))
 	err := router.Run(":5001")

@@ -30,7 +30,7 @@ func EnsureUrlShortenIndex() []mongo.IndexModel {
 			Keys: bson.D{
 				{"token", 1},
 			},
-			Options: options.Index().SetName("Ix_Asc_Token"),
+			Options: options.Index().SetName("Ix_Asc_Token").SetUnique(true),
 		},
 		{
 			Keys: bson.D{

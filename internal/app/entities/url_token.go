@@ -33,5 +33,11 @@ func EnsureUrlTokenIndex() []mongo.IndexModel {
 			},
 			Options: options.Index().SetName("Ix_Asc_IsUsed_Asc_CreatedAt"),
 		},
+		{
+			Keys: bson.D{
+				{"token", 1},
+			},
+			Options: options.Index().SetName("Ix_Asc_Token").SetUnique(true),
+		},
 	}
 }

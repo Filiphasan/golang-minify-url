@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/Filiphasan/golang-minify-url/configs"
 	"github.com/Filiphasan/golang-minify-url/internal/app/caches"
+	"github.com/Filiphasan/golang-minify-url/internal/app/controllers"
 	"github.com/Filiphasan/golang-minify-url/internal/app/routes"
 	"github.com/Filiphasan/golang-minify-url/internal/database"
 	"github.com/gin-gonic/gin"
@@ -30,14 +31,19 @@ func NewApp(appConfig *configs.AppConfig, logger *zap.Logger, Router *gin.Engine
 	}
 }
 
-func (app *App) Run() func(ctx context.Context) {
+func (app *App) Run(ctx context.Context) func() {
 	redisCache := caches.NewRedisCache(app.Redis)
 	mongoContext := database.NewMongoContext(app.Mongo, app.AppConfig)
+	mongoContext.EnsureIndexes(ctx)
 
-	routes.NewHealthRoute(app.Router, redisCache, mongoContext).SetupHealthRoutes()
+	// Setup controllers
+	healthController := controllers.NewHealthController(redisCache, mongoContext)
+
+	// Setup routes
+	routes.NewHealthRoute(app.Router, healthController).SetupHealthRoutes()
 
 	// Return a function to be deferred
-	return func(ctx context.Context) {
+	return func() {
 		_ = app.Logger.Sync()
 		_ = app.Redis.Close()
 		_ = app.Mongo.Disconnect(ctx)

@@ -51,6 +51,6 @@ func (hc *HealthController) GetHealth(ctx *gin.Context) {
 	if r.Healthy {
 		result.Success(&r, constants.SUCCESS).ToJson(ctx)
 	} else {
-		result.FailureD(constants.InternalServerError, constants.FAILED, &r).ToJson(ctx)
+		result.FailureD(&r, constants.InternalServerError, constants.FAILED).ToJson(ctx)
 	}
 }
