@@ -21,7 +21,7 @@ func Success[T any](data T) HttpResult[T] {
 	}
 }
 
-func SuccessWMessage[T any](data T, message string) HttpResult[T] {
+func SuccessWithMessage[T any](data T, message string) HttpResult[T] {
 	return HttpResult[T]{
 		Data:       data,
 		Message:    message,
@@ -79,7 +79,7 @@ func Failure[T any](statusCode int, message string) HttpResult[T] {
 	}
 }
 
-func FailureD[T any](data T, statusCode int, message string) HttpResult[T] {
+func FailureWithData[T any](data T, statusCode int, message string) HttpResult[T] {
 	return HttpResult[T]{
 		StatusCode: statusCode,
 		Message:    message,
