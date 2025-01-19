@@ -7,7 +7,12 @@ import (
 
 type AppConfig struct {
 	ProjectName string `json:"projectName"`
-	Mongodb     struct {
+	Server      struct {
+		Scheme string `json:"scheme"`
+		Host   string `json:"host"`
+		Port   string `json:"port"`
+	} `json:"server"`
+	Mongodb struct {
 		Host     string `json:"host"`
 		Port     string `json:"port"`
 		Username string `json:"username"`
@@ -20,6 +25,12 @@ type AppConfig struct {
 		Password string `json:"password"`
 		Database int    `json:"database"`
 	} `json:"redis"`
+	Token struct {
+		PoolingSize    int    `json:"poolingSize"`
+		ExtendSize     int    `json:"extendSize"`
+		ExpirationDays int    `json:"expirationDays"`
+		EpochDate      string `json:"epochDate"`
+	} `json:"token"`
 }
 
 var appConfig *AppConfig

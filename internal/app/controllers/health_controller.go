@@ -22,7 +22,7 @@ func NewHealthController(cache caches.Cache, mongoContext *database.MongoContext
 }
 
 func (hc *HealthController) GetHealth(ctx *gin.Context) {
-	r := response.HealthRes{
+	r := &response.HealthRes{
 		Healthy: true,
 		Redis: response.HealthResItem{
 			Healthy: true,
@@ -49,8 +49,8 @@ func (hc *HealthController) GetHealth(ctx *gin.Context) {
 	}
 
 	if r.Healthy {
-		result.Success(&r, constants.SUCCESS).ToJson(ctx)
+		result.Success(r).ToJson(ctx)
 	} else {
-		result.FailureD(&r, constants.InternalServerError, constants.FAILED).ToJson(ctx)
+		result.FailureD(&r, constants.ServiceUnavailable, constants.FAILED).ToJson(ctx)
 	}
 }

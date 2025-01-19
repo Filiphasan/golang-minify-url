@@ -12,4 +12,5 @@ const (
 	MethodNotAllowed    = 405
 	Conflict            = 409
 	InternalServerError = 500
+	ServiceUnavailable  = 503
 )

@@ -4,4 +4,5 @@ const (
 	SUCCESS = "Success"
 	FAILED  = "Failed"
 	INVALID = "Invalid"
+	ERROR   = "Error"
 )

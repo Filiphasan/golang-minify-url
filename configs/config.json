@@ -1,5 +1,10 @@
 {
   "projectName": "golang-minify-url",
+  "server": {
+    "scheme": "https",
+    "host": "localhost",
+    "port": "5001"
+  },
   "mongodb": {
     "host": "127.0.0.1",
     "port": "27017",
@@ -12,5 +17,11 @@
     "port": "6379",
     "password": "8mn1JpZ5oumuU2zTNwgK",
     "database": 0
+  },
+  "token": {
+    "poolingSize": 500000,
+    "extendSize": 100000,
+    "expirationDays": 120,
+    "epochDate": "2025-01-01"
   }
 }
