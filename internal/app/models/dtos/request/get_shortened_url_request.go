@@ -3,7 +3,7 @@ package request
 import validation "github.com/go-ozzo/ozzo-validation"
 
 type GetShortenedURLRequest struct {
-	Token string `json:"token"`
+	Token string `json:"token" uri:"token"`
 }
 
 func (r *GetShortenedURLRequest) Validate() error {

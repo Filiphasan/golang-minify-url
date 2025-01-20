@@ -6,6 +6,7 @@ import (
 	"github.com/Filiphasan/golang-minify-url/internal/app/caches"
 	"github.com/Filiphasan/golang-minify-url/internal/app/controllers"
 	"github.com/Filiphasan/golang-minify-url/internal/app/routes"
+	"github.com/Filiphasan/golang-minify-url/internal/app/services"
 	"github.com/Filiphasan/golang-minify-url/internal/database"
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
@@ -36,11 +37,17 @@ func (app *App) Run(ctx context.Context) func() {
 	mongoContext := database.NewMongoContext(app.Mongo, app.AppConfig)
 	mongoContext.EnsureIndexes(ctx)
 
+	//Setup Services
+	tokenService := services.NewTokenService(app.AppConfig, redisCache, mongoContext)
+	shortenerService := services.NewShortenerService(app.AppConfig, redisCache, mongoContext, tokenService)
+
 	// Setup controllers
 	healthController := controllers.NewHealthController(redisCache, mongoContext)
+	urlShortenerController := controllers.NewUrlShortenerController(shortenerService)
 
 	// Setup routes
 	routes.NewHealthRoute(app.Router, healthController).SetupHealthRoutes()
+	routes.NewUrlShortenerRoute(app.Router, urlShortenerController).SetupUrlShortenerRoutes()
 
 	// Return a function to be deferred
 	return func() {
