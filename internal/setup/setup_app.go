@@ -5,6 +5,7 @@ import (
 	"github.com/Filiphasan/golang-minify-url/configs"
 	"github.com/Filiphasan/golang-minify-url/internal/app/caches"
 	"github.com/Filiphasan/golang-minify-url/internal/app/controllers"
+	"github.com/Filiphasan/golang-minify-url/internal/app/jobs"
 	"github.com/Filiphasan/golang-minify-url/internal/app/routes"
 	"github.com/Filiphasan/golang-minify-url/internal/app/services"
 	"github.com/Filiphasan/golang-minify-url/internal/database"
@@ -48,6 +49,9 @@ func (app *App) Run(ctx context.Context) func() {
 	// Setup routes
 	routes.NewHealthRoute(app.Router, healthController).SetupHealthRoutes()
 	routes.NewUrlShortenerRoute(app.Router, urlShortenerController).SetupUrlShortenerRoutes()
+
+	// Setup Jobs
+	jobs.NewSetupJob(app.AppConfig, app.Logger, mongoContext, redisCache).Run()
 
 	// Return a function to be deferred
 	return func() {
