@@ -43,7 +43,7 @@ func (app *App) Run(ctx context.Context) func() {
 
 	// Setup controllers
 	healthController := controllers.NewHealthController(redisCache, mongoContext)
-	urlShortenerController := controllers.NewUrlShortenerController(shortenerService)
+	urlShortenerController := controllers.NewUrlShortenerController(app.Logger, shortenerService)
 
 	// Setup routes
 	routes.NewHealthRoute(app.Router, healthController).SetupHealthRoutes()
