@@ -48,9 +48,9 @@ func (s *ShortenerService) GetShortenedUrl(ctx context.Context, r *request.GetSh
 		return result.Success[*response.GetShortenedURLResponse](res)
 	}
 
-	urlShorten := entities.UrlShorten{}
+	urlShorten := &entities.UrlShorten{}
 	filter := bson.D{{"token", token}}
-	err = s.mongoContext.UrlTokens().FindOne(ctx, filter).Decode(&urlShorten)
+	err = s.mongoContext.UrlTokens().FindOne(ctx, filter).Decode(urlShorten)
 	if errors.Is(err, mongo.ErrNoDocuments) {
 		return result.NotFound[*response.GetShortenedURLResponse]("Shortened URL not found!")
 	}
@@ -64,24 +64,33 @@ func (s *ShortenerService) GetShortenedUrl(ctx context.Context, r *request.GetSh
 }
 
 func (s *ShortenerService) SetShortenedUrl(ctx context.Context, r *request.SetShortenURLRequest) result.HttpResult[*response.SetShortenURLResponse] {
-	tokenRes := s.tokenService.GetUnusedToken(ctx)
-	if tokenRes.Error != nil {
-		return result.Error[*response.SetShortenURLResponse](tokenRes.Error)
-	}
-
-	token := tokenRes.Data
+	token := ""
 	url := r.Url
-	expiredDay := r.ExpireDay
-	urlShorten := entities.NewUrlShorten(token, url, expiredDay)
-	_, err := s.mongoContext.UrlTokens().InsertOne(ctx, urlShorten)
-	if err != nil {
-		return result.Error[*response.SetShortenURLResponse](err)
-	}
 
-	cacheKey := fmt.Sprintf(constants.ShortUrlCacheKey, token)
-	err = s.cache.Set(ctx, cacheKey, url, time.Hour*time.Duration(expiredDay))
-	if err != nil {
-		return result.Error[*response.SetShortenURLResponse](err)
+	urlShorten := &entities.UrlShorten{}
+	urlExistErr := s.mongoContext.UrlTokens().FindOne(ctx, bson.D{{"url", url}}).Decode(urlShorten)
+	if errors.Is(urlExistErr, mongo.ErrNoDocuments) {
+		tokenRes := s.tokenService.GetUnusedToken(ctx)
+		if tokenRes.Error != nil {
+			return result.Error[*response.SetShortenURLResponse](tokenRes.Error)
+		}
+		token = tokenRes.Data
+		expiredDay := r.ExpireDay
+		urlShorten = entities.NewUrlShorten(token, url, expiredDay)
+		_, err := s.mongoContext.UrlTokens().InsertOne(ctx, urlShorten)
+		if err != nil {
+			return result.Error[*response.SetShortenURLResponse](err)
+		}
+
+		cacheKey := fmt.Sprintf(constants.ShortUrlCacheKey, token)
+		err = s.cache.Set(ctx, cacheKey, url, time.Hour*time.Duration(expiredDay))
+		if err != nil {
+			return result.Error[*response.SetShortenURLResponse](err)
+		}
+	} else if urlExistErr != nil {
+		return result.Error[*response.SetShortenURLResponse](urlExistErr)
+	} else {
+		token = urlShorten.Token
 	}
 
 	sUrl := fmt.Sprintf("%s://%s:%s/%s", s.appConfig.Server.Scheme, s.appConfig.Server.Host, s.appConfig.Server.Port, token)
