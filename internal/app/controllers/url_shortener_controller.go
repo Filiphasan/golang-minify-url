@@ -5,6 +5,7 @@ import (
 	"github.com/Filiphasan/golang-minify-url/internal/app/models/dtos/response"
 	"github.com/Filiphasan/golang-minify-url/internal/app/models/result"
 	"github.com/Filiphasan/golang-minify-url/internal/app/services"
+	"github.com/Filiphasan/golang-minify-url/pkg/constants"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -66,5 +67,6 @@ func (usc *UrlShortenerController) GetShortUrl(ctx *gin.Context) {
 	if res.Error != nil {
 		usc.logger.Error("Error while getting shortened URL", zap.String("method", methodName), zap.Error(res.Error))
 	}
-	res.ToJson(ctx)
+
+	ctx.Redirect(constants.Redirect, res.Data.LongUrl)
 }

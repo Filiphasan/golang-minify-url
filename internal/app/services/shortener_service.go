@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"github.com/Filiphasan/golang-minify-url/configs"
@@ -13,6 +14,7 @@ import (
 	"github.com/Filiphasan/golang-minify-url/internal/database"
 	"github.com/Filiphasan/golang-minify-url/pkg/constants"
 	"github.com/redis/go-redis/v9"
+	"github.com/skip2/go-qrcode"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"time"
@@ -94,9 +96,29 @@ func (s *ShortenerService) SetShortenedUrl(ctx context.Context, r *request.SetSh
 	}
 
 	sUrl := fmt.Sprintf("%s://%s:%s/%s", s.appConfig.Server.Scheme, s.appConfig.Server.Host, s.appConfig.Server.Port, token)
+	qrCodeBase64, err := s.getUrlBase64QrCode(sUrl, r.HasQrCode)
+	if err != nil {
+		return result.Error[*response.SetShortenURLResponse](err)
+	}
+
 	res := &response.SetShortenURLResponse{
 		Token:        token,
 		ShortenedUrl: sUrl,
+		QrCode:       qrCodeBase64,
 	}
 	return result.Success[*response.SetShortenURLResponse](res)
+}
+
+func (s *ShortenerService) getUrlBase64QrCode(url string, hasQr bool) (string, error) {
+	if !hasQr {
+		return "", nil
+	}
+
+	png, err := qrcode.Encode(url, qrcode.Medium, 256)
+	if err != nil {
+		return "", err
+	}
+
+	base64Str := base64.StdEncoding.EncodeToString(png)
+	return base64Str, nil
 }
