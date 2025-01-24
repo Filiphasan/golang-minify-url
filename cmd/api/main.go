@@ -21,6 +21,8 @@ func main() {
 	appConfig := configs.GetAppConfig()
 
 	logger.UseLogger(appConfig)
+	logger.Logger.Info("Starting Golang with App Config", zap.Any("App Config", appConfig))
+
 	mongoDb := database.UseMongo(ctx, appConfig)
 	redisCache := redis.UseRedis(ctx, appConfig)
 

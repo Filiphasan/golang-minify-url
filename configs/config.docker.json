@@ -1,0 +1,13 @@
+﻿{
+  "projectName": "golang-minify-url",
+  "environment": "docker",
+  "server": {
+    "port": "8080"
+  },
+  "mongodb": {
+    "host": "mongodb"
+  },
+  "redis": {
+    "host": "redis"
+  }
+}

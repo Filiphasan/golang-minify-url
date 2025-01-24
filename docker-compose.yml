@@ -41,10 +41,4 @@ services:
     depends_on:
       - mongodb
     environment:
-      - APP_ENV=development
-      - mongodb:host=mongodb
-      - mongodb:port=27017
-      - mongodb:username=${MONGO_USERNAME}
-      - mongodb:password=${MONGO_PASSWORD}
-      - redis:host=redis
-      - redis:password=${REDIS_PASSWORD}
+      - APP_ENV=docker

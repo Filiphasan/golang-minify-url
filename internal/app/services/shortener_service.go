@@ -95,7 +95,7 @@ func (s *ShortenerService) SetShortenedUrl(ctx context.Context, r *request.SetSh
 		token = urlShorten.Token
 	}
 
-	sUrl := fmt.Sprintf("%s://%s:%s/%s", s.appConfig.Server.Scheme, s.appConfig.Server.Host, s.appConfig.Server.Port, token)
+	sUrl := fmt.Sprintf("%s/%s", s.appConfig.Server.ShortUrl, token)
 	qrCodeBase64, err := s.getUrlBase64QrCode(sUrl, r.HasQrCode)
 	if err != nil {
 		return result.Error[*response.SetShortenURLResponse](err)
