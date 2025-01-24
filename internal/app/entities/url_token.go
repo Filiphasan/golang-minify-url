@@ -9,10 +9,10 @@ import (
 
 type UrlToken struct {
 	Id        bson.ObjectID `bson:"_id" json:"id"`
-	Token     string        `json:"token"`
-	IsUsed    bool          `json:"isUsed"`
-	CreatedAt time.Time     `json:"createdAt"`
-	UsedAt    time.Time     `json:"usedAt,omitempty"`
+	Token     string        `bson:"token" json:"token"`
+	IsUsed    bool          `bson:"isUsed" json:"isUsed"`
+	CreatedAt time.Time     `bson:"createdAt" json:"createdAt"`
+	UsedAt    time.Time     `bson:"usedAt" json:"usedAt,omitempty"`
 }
 
 func NewUrlToken(token string) *UrlToken {

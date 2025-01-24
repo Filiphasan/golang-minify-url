@@ -72,7 +72,7 @@ func (t *TokenService) GetUnusedToken(ctx context.Context) result.HttpResult[str
 
 func (t *TokenService) setTokenUsed(ctx context.Context, token string) error {
 	filter := bson.D{{"token", token}}
-	_, err := t.mongoContext.UrlTokens().UpdateOne(ctx, filter, bson.M{"$set": bson.M{"used": true}})
+	_, err := t.mongoContext.UrlTokens().UpdateOne(ctx, filter, bson.M{"$set": bson.M{"isUsed": true}})
 	if err != nil {
 		return err
 	}

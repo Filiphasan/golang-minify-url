@@ -30,13 +30,15 @@ func (s *SetupJob) Run() {
 
 	// Add your jobs here
 	urlTokenPool := NewUrlTokenPoolJob(s.appConfig, s.logger, s.mongoContext, s.cache)
-	urlTokenPoolJob, err := scheduler.NewJob(
-		gocron.CronJob("* */10 * * * *", true),
+	_, err = scheduler.NewJob(
+		gocron.CronJob("0 */5 * * * *", true),
 		gocron.NewTask(urlTokenPool.Run),
 		gocron.WithName("UrlTokenPoolJob"),
 	)
 	if err != nil {
-		s.logger.Error("Failed to create job", zap.Error(err), zap.String("JobName", urlTokenPoolJob.Name()), zap.String("Method", methodName))
+		s.logger.Error("Failed to create job", zap.Error(err), zap.String("Method", methodName))
 		return
 	}
+
+	scheduler.Start()
 }
