@@ -6,6 +6,7 @@ import (
 	"github.com/Filiphasan/golang-minify-url/internal/app/caches"
 	"github.com/Filiphasan/golang-minify-url/internal/app/entities"
 	"github.com/Filiphasan/golang-minify-url/internal/database"
+	"github.com/Filiphasan/golang-minify-url/pkg/constants"
 	"github.com/Filiphasan/golang-minify-url/pkg/helpers"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.uber.org/zap"
@@ -74,6 +75,11 @@ func (u *UrlTokenPoolJob) GenerateAndSaveToken(ctx context.Context, wg *sync.Wai
 		_, err := u.mongoContext.UrlTokens().InsertOne(ctx, urlToken)
 		if err != nil {
 			u.logger.Error("Failed to insert token", zap.Error(err), zap.String("Method", methodName))
+			return
+		}
+		err = u.cache.AddList(ctx, constants.TokenSeedListCacheKey, true, token)
+		if err != nil {
+			u.logger.Error("Failed to add token to cache", zap.Error(err), zap.String("Method", methodName))
 			return
 		}
 	}
