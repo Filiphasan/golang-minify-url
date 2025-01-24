@@ -17,6 +17,7 @@ type UrlToken struct {
 
 func NewUrlToken(token string) *UrlToken {
 	return &UrlToken{
+		Id:        bson.NewObjectID(),
 		Token:     token,
 		IsUsed:    false,
 		CreatedAt: time.Now(),

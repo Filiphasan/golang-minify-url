@@ -19,7 +19,7 @@ func NewUrlShortenerRoute(router *gin.Engine, usc *controllers.UrlShortenerContr
 
 func (usr *UrlShortenerRoute) SetupUrlShortenerRoutes() {
 	group := usr.router.Group("/api/url-shorts")
-	group.POST("/", func(ctx *gin.Context) {
+	group.POST("", func(ctx *gin.Context) {
 		usr.usc.ShortUrl(ctx)
 	})
 

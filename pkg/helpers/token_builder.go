@@ -58,7 +58,7 @@ func (t *TokenBuilder) generateTokenFomEpoch() string {
 
 func (t *TokenBuilder) generateTokenFromAddChars() string {
 	token := strings.Builder{}
-	n := big.NewInt(int64(CharsetLength + 1))
+	n := big.NewInt(int64(CharsetLength))
 
 	for i := 0; i < t.addChars; i++ {
 		rndIndex, _ := rand.Int(rand.Reader, n)

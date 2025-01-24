@@ -52,7 +52,7 @@ func (s *ShortenerService) GetShortenedUrl(ctx context.Context, r *request.GetSh
 
 	urlShorten := &entities.UrlShorten{}
 	filter := bson.D{{"token", token}}
-	err = s.mongoContext.UrlTokens().FindOne(ctx, filter).Decode(urlShorten)
+	err = s.mongoContext.UrlShortens().FindOne(ctx, filter).Decode(urlShorten)
 	if errors.Is(err, mongo.ErrNoDocuments) {
 		return result.NotFound[*response.GetShortenedURLResponse]("Shortened URL not found!")
 	}
@@ -70,7 +70,7 @@ func (s *ShortenerService) SetShortenedUrl(ctx context.Context, r *request.SetSh
 	url := r.Url
 
 	urlShorten := &entities.UrlShorten{}
-	urlExistErr := s.mongoContext.UrlTokens().FindOne(ctx, bson.D{{"url", url}}).Decode(urlShorten)
+	urlExistErr := s.mongoContext.UrlShortens().FindOne(ctx, bson.D{{"url", url}}).Decode(urlShorten)
 	if errors.Is(urlExistErr, mongo.ErrNoDocuments) {
 		tokenRes := s.tokenService.GetUnusedToken(ctx)
 		if tokenRes.Error != nil {
@@ -79,7 +79,7 @@ func (s *ShortenerService) SetShortenedUrl(ctx context.Context, r *request.SetSh
 		token = tokenRes.Data
 		expiredDay := r.ExpireDay
 		urlShorten = entities.NewUrlShorten(token, url, expiredDay)
-		_, err := s.mongoContext.UrlTokens().InsertOne(ctx, urlShorten)
+		_, err := s.mongoContext.UrlShortens().InsertOne(ctx, urlShorten)
 		if err != nil {
 			return result.Error[*response.SetShortenURLResponse](err)
 		}

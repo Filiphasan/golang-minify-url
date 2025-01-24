@@ -1,9 +1,10 @@
 {
   "projectName": "golang-minify-url",
+  "environment": "development",
   "server": {
     "scheme": "https",
     "host": "localhost",
-    "port": "5001"
+    "port": ":5001"
   },
   "mongodb": {
     "host": "127.0.0.1",

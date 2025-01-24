@@ -7,6 +7,7 @@ import (
 
 type AppConfig struct {
 	ProjectName string `json:"projectName"`
+	Environment string `json:"environment"`
 	Server      struct {
 		Scheme string `json:"scheme"`
 		Host   string `json:"host"`
@@ -58,7 +59,11 @@ func LoadAppConfig() {
 	}
 
 	appConfig = &AppConfig{}
-	_ = viper.Unmarshal(appConfig)
+	err = viper.Unmarshal(appConfig)
+	appConfig.Environment = environment
+	if err != nil {
+		panic(err)
+	}
 }
 
 func GetAppConfig() *AppConfig {

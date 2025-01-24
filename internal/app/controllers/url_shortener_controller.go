@@ -68,5 +68,10 @@ func (usc *UrlShortenerController) GetShortUrl(ctx *gin.Context) {
 		usc.logger.Error("Error while getting shortened URL", zap.String("method", methodName), zap.Error(res.Error))
 	}
 
+	if res.StatusCode != constants.Ok {
+		res.ToJson(ctx)
+		return
+	}
+
 	ctx.Redirect(constants.Redirect, res.Data.LongUrl)
 }

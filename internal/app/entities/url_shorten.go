@@ -17,6 +17,7 @@ type UrlShorten struct {
 
 func NewUrlShorten(token, url string, expiredAtDay int) *UrlShorten {
 	return &UrlShorten{
+		Id:        bson.NewObjectID(),
 		Token:     token,
 		Url:       url,
 		CreatedAt: time.Now(),

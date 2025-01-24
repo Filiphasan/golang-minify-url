@@ -27,12 +27,14 @@ func main() {
 	router := gin.Default()
 	middlewares.NewCorrelationMiddleware(router).Use()
 	middlewares.NewReqResLogMiddleware(router, logger.Logger).Use()
+	middlewares.NewExceptionMiddleware(router, logger.Logger).Use()
 	setupDefer := setup.NewApp(appConfig, logger.Logger, router, mongoDb, redisCache).Run(ctx)
 	defer setupDefer()
 
 	logger.Logger.Info("Hello, Golang Minify URL!", zap.String("Owner", "Hasan Erdal"))
 	err := router.Run(appConfig.Server.Port)
 	if err != nil {
+		logger.Logger.Error("Failed to start server", zap.Error(err))
 		panic(err)
 	}
 }
