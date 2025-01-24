@@ -32,7 +32,7 @@ func main() {
 	defer setupDefer()
 
 	logger.Logger.Info("Hello, Golang Minify URL!", zap.String("Owner", "Hasan Erdal"))
-	err := router.Run(appConfig.Server.Port)
+	err := router.Run(":" + appConfig.Server.Port)
 	if err != nil {
 		logger.Logger.Error("Failed to start server", zap.Error(err))
 		panic(err)
